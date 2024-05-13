@@ -1,6 +1,7 @@
 let createError = require('http-errors'); express = require('express');
 let path = require('path'); cookieParser = require('cookie-parser');
 let logger = require('morgan');
+const fs = require('fs')
 
 
 let app = express();
@@ -11,10 +12,15 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.set('view engien', 'jade')
+
+app.use('/uploads', express.static('uploads'))
 
 app.use('/api', require('./routes'))
 
-
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads')
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
