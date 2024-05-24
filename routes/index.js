@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const { UserController } = require('../controllers');
 
 const uploadDestination = 'upload'
 
@@ -13,8 +14,6 @@ const storage = multer.diskStorage({
 
 const uploads = multer({storage: storage})
 
-router.get('/register', (req, res, next) => {
-    res.send('Молоток')
-})
-
+router.post('/register', UserController.register)
+router.post('/login', UserController.login)
 module.exports = router
