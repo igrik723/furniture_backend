@@ -29,24 +29,24 @@ model Agreement {
   id          Int      @id @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
-  dateOfStart DateTime
+  dateOfStart DateTime @default(now())
   dateOfEnd   DateTime
-  sale        Sale     @relation(fields: [saleId], references: [id])
-  saleId      Int      @unique
+  sale        Sale[]
 }
 
 model Sale {
   id              Int              @id @default(autoincrement())
-  agreement       Agreement?       @relation
-  agreementId     Int              @unique
-  furnitureModels FurnitureModel[]
+  agreement       Agreement        @relation(fields: [agreementId], references: [id])
+  agreementId     Int             
+  furnitureModel FurnitureModel? @relation(fields: [furnitureId], references: [id])
+  furnitureId     Int
   count           Int
 }
 
 model FurnitureModel {
   id            Int    @id @default(autoincrement())
-  sale          Sale   @relation(fields: [saleId], references: [id])
-  saleId        Int
+  sales         Sale[]   
+  saleId        Int?
   furnitureName String
   furnitureType String
   Property      String
