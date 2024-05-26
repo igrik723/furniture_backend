@@ -46,7 +46,6 @@ model Sale {
 model FurnitureModel {
   id            Int    @id @default(autoincrement())
   sales         Sale[]   
-  saleId        Int?
   furnitureName String
   furnitureType String
   Property      String
