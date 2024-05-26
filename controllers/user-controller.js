@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const UserController = {
     register: async (req, res) => {
-        const { email, password, name } = req.body;
+        const { email, password, name, role } = req.body;
 
         if (!email || !password || !name) {
             return res.status(400).json({error: 'Все поля обязательны'})
@@ -26,6 +26,7 @@ const UserController = {
                     name,
                     address: 'Alex',
                     phoneNumber: '8-800-555-35-35',
+                    role
                 }
             })
 
@@ -65,6 +66,7 @@ const UserController = {
             res.status(500).json({error: 'Internal server error'})
         }
     },
+    
 }
 
 
