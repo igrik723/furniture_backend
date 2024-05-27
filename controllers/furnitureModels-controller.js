@@ -5,7 +5,7 @@ const furnitureModelsController = {
         const role = req.user.role
 
         if (role !== 'Admin') {
-            return res.status(400).json({error: req.user})
+            return res.status(403).json({error: "Нет доступа"})
         }
         const {furnitureName, furnitureType, Property, Price } = req.body
         
@@ -31,12 +31,24 @@ const furnitureModelsController = {
         }
     },
     deleteModel: async (req, res) => {
-        const id = req.params
+        const {id} = req.params
+        const modelId = parseInt(id, 10)
 
-        const furnitureModel = await prisma.furnitureModel.findUnique({ where: { id } })
-        
-        if (!furnitureModel) {
-            return res.status(404).json({error: 'Модель не найдена'})
+        if (req.user.role !== 'Admin') {
+            return res.status(403).json({error: "Нет доступа"})
+        }
+
+        try {
+            const transaction = await prisma.$transaction([
+                prisma.sale.deleteMany({ where: { furnitureId: modelId } }),
+                prisma.furnitureModel.delete({where: {id: modelId}})
+            ])
+
+            res.json(transaction)
+
+        } catch (error) {
+            console.error('Delete model error', error)
+            res.status(500).json({error: 'Internal server error'})
         }
 
     },
