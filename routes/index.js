@@ -22,12 +22,15 @@ router.post('/login', UserController.login)
 //Роуты моделей мебели
 
 router.post('/furnitureModels', authenticateToken, FurnitureModelsController.createModel)
-router.delete('/furnitureModels/:id', authenticateToken, FurnitureModelsController.createModel)
+router.delete('/furnitureModels/:id', authenticateToken, FurnitureModelsController.deleteModel)
 
 //Роуты продаж
 router.post('/sale', authenticateToken, SaleController.saleModel)
+router.delete('/sale/:id', authenticateToken, SaleController.deleteSale)
 //Роуты договоров
 router.post('/agreements', authenticateToken, AgreementController.createAgreement)
+router.get('/agreements', authenticateToken, AgreementController.getUserAgreement)
+router.delete('/agreements/:id', authenticateToken, AgreementController.deleteAgreement)
 
 
 module.exports = router
