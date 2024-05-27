@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken')
 
 const UserController = {
     register: async (req, res) => {
-        const { email, password, name, role } = req.body;
+        const { email, password, name, role, address, phoneNumber } = req.body;
 
         if (!email || !password || !name) {
-            return res.status(400).json({error: 'Все поля обязательны'})
+            return res.status(401).json({error: 'Все поля обязательны'})
         }
 
         try {
@@ -24,8 +24,8 @@ const UserController = {
                     email,
                     password: hashedPassword,
                     name,
-                    address: 'Alex',
-                    phoneNumber: '8-800-555-35-35',
+                    address,
+                    phoneNumber,
                     role
                 }
             })
@@ -58,7 +58,7 @@ const UserController = {
                 return res.status(400).json({error: 'Неверный логин или пароль'})
             }
 
-            const token = jwt.sign(({ userId: user.id }), process.env.SECRET_KEY)
+            const token = jwt.sign(({ userId: user.id, role: user.role }), process.env.SECRET_KEY)
             
             res.json({ token })
         } catch (error) {
