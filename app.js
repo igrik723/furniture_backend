@@ -2,13 +2,14 @@ let createError = require('http-errors'); express = require('express');
 let path = require('path'); cookieParser = require('cookie-parser');
 let logger = require('morgan');
 const fs = require('fs')
+const cors = require('cors')
 require('dotenv').config()
 
 
 let app = express();
 
+app.use(cors())
 app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
