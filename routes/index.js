@@ -23,6 +23,7 @@ router.post('/login', UserController.login)
 
 router.post('/furnitureModels', authenticateToken, FurnitureModelsController.createModel)
 router.delete('/furnitureModels/:id', authenticateToken, FurnitureModelsController.deleteModel)
+router.get('/furnitureModels', FurnitureModelsController.getModels)
 
 //Роуты продаж
 router.post('/sale', authenticateToken, SaleController.saleModel)
