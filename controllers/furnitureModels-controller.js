@@ -52,6 +52,25 @@ const furnitureModelsController = {
         }
 
     },
+
+    getModels: async (req, res) => {
+        const { search } = req.query;
+        try {
+            const models = await prisma.furnitureModel.findMany({
+                where: {
+                    OR: [
+                        { furnitureName: { contains: search, mode: 'insensitive' } },
+                        { furnitureType: { contains: search, mode: 'insensitive' } },
+                        { Property: { contains: search, mode: 'insensitive' } },
+                    ]
+                }
+            });
+            res.json(models)
+        } catch (error) {
+            console.error('Get models error', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }
 
 module.exports = furnitureModelsController
