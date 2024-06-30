@@ -60,7 +60,7 @@ const UserController = {
 
             const token = jwt.sign(({ userId: user.id, role: user.role }), process.env.SECRET_KEY)
             
-            res.json({ token, name: user.name, email: user.email, address: user.address, phoneNumber: user.phoneNumber })
+            res.json({ token, name: user.name, email: user.email, address: user.address, phoneNumber: user.phoneNumber, role: user.role })
         } catch (error) {
             console.log('Login error', error)
             res.status(500).json({error: 'Internal server error'})
