@@ -51,5 +51,6 @@ model FurnitureModel {
   furnitureType String
   Property      String
   Price         Int
+  count         Int  @default(0)
   imageUrl      String?
 }

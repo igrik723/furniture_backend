@@ -3,7 +3,9 @@ let path = require('path'); cookieParser = require('cookie-parser');
 let logger = require('morgan');
 const fs = require('fs')
 const cors = require('cors')
+const fileUpload = require('express-fileupload')
 require('dotenv').config()
+
 
 
 let app = express();
@@ -12,6 +14,8 @@ app.use(cors())
 app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
+app.use(express.static(path.resolve(__dirname, 'static')))
+app.use(fileUpload({}))
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.set('view engien', 'jade')

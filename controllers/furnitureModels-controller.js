@@ -1,4 +1,6 @@
 const { prisma } = require('../prisma/prisma-client')
+const uuid = require('uuid')
+const path = require('path')
 
 const furnitureModelsController = {
     createModel: async (req, res) => {
@@ -7,11 +9,16 @@ const furnitureModelsController = {
         if (role !== 'Admin') {
             return res.status(403).json({error: "Нет доступа"})
         }
-        const {furnitureName, furnitureType, Property, Price } = req.body
-        
+        const { furnitureName, furnitureType, Property, Price } = req.body
+        const priceInt = parseInt(Price, 10)
+        const { img } = req.files
+        const fileName = uuid.v4() + ".jpg"
+        img.mv(path.resolve(__dirname, '..', 'static', fileName))
+
         if (!furnitureName || !furnitureType || !Property || !Price) {
             return res.status(400).json({error: 'Все поля обязательны'})
         }
+
 
         try {
             const furnitureModel = await prisma.furnitureModel.create({
@@ -19,7 +26,8 @@ const furnitureModelsController = {
                     furnitureName,
                     furnitureType,
                     Property,
-                    Price,
+                    Price: priceInt,
+                    imageUrl: fileName
                 }
             })
 
