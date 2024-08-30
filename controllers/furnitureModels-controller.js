@@ -9,7 +9,8 @@ const furnitureModelsController = {
         if (role !== 'Admin') {
             return res.status(403).json({error: "Нет доступа"})
         }
-        const { furnitureName, furnitureType, Property, Price } = req.body
+        const { furnitureName, furnitureType, Property, Price, count } = req.body
+        const modelCount = parseInt(count, 10)
         const priceInt = parseInt(Price, 10)
         const { img } = req.files
         const fileName = uuid.v4() + ".jpg"
@@ -27,7 +28,8 @@ const furnitureModelsController = {
                     furnitureType,
                     Property,
                     Price: priceInt,
-                    imageUrl: fileName
+                    imageUrl: fileName,
+                    count: modelCount
                 }
             })
 
@@ -76,6 +78,31 @@ const furnitureModelsController = {
             res.json(models)
         } catch (error) {
             console.error('Get models error', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    },
+
+    updateModelcount: async (req, res) => {
+        const { id } = req.params
+        const { count } = req.body;
+
+        if (req.user.role !== 'Admin') {
+            return res.status(403).json({ error: "Нет доступа" })
+        }
+
+        if (!count || isNaN(parseInt(count, 10))) {
+            return res.status(400).json({ error: 'Некорректное значение count' });
+        }
+
+        try {
+            const updateModel = await prisma.furnitureModel.update({
+                where: { id: parseInt(id, 10) },
+                data: { count: parseInt(count, 10) },
+            });
+
+            res.json(updateModel)
+        } catch (error) {
+            console.error('Update model count error', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     }
