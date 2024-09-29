@@ -12,32 +12,35 @@ const furnitureModelsController = {
         const { furnitureName, furnitureType, Property, Price, count } = req.body
         const modelCount = parseInt(count, 10)
         const priceInt = parseInt(Price, 10)
-        const { img } = req.files
-        const fileName = uuid.v4() + ".jpg"
-        img.mv(path.resolve(__dirname, '..', 'static', fileName))
+        let fileName = null;
+        if (req.files && req.files.img) {
+            const { img } = req.files;
+            fileName = uuid.v4() + ".jpg";
+            img.mv(path.resolve(__dirname, '..', 'static', fileName));
+        }
 
         if (!furnitureName || !furnitureType || !Property || !Price) {
             return res.status(400).json({error: 'Все поля обязательны'})
         }
+        const data = {
+            furnitureName,
+            furnitureType,
+            Property,
+            Price: priceInt,
+            count: modelCount,
+        };
 
-
+        if (fileName) {
+            data.imageUrl = fileName;
+        }
         try {
             const furnitureModel = await prisma.furnitureModel.create({
-                data: {
-                    furnitureName,
-                    furnitureType,
-                    Property,
-                    Price: priceInt,
-                    imageUrl: fileName,
-                    count: modelCount
-                }
-            })
-
-            res.json(furnitureModel)
+                data,
+            });
+            res.json(furnitureModel);
         } catch (error) {
-            console.log('Create furnitureModel error', error)
-
-            res.status(500).json({error: 'Internal server error'})
+            console.log('Create furnitureModel error', error);
+            res.status(500).json({ error: 'Internal server error' });
         }
     },
     deleteModel: async (req, res) => {
@@ -65,6 +68,7 @@ const furnitureModelsController = {
 
     getModels: async (req, res) => {
         const { search } = req.query;
+        console.log(req.query)
         try {
             const models = await prisma.furnitureModel.findMany({
                 where: {
