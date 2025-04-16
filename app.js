@@ -10,7 +10,13 @@ require('dotenv').config()
 
 let app = express();
 
-app.use(cors())
+const corsOptions = {
+  origin: 'https://furniture-frontend-8k9ejmltv-igrik723s-projects.vercel.app/',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}
+
+app.use(cors(corsOptions))
 app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
