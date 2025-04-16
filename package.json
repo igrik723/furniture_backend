@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "postinstall": "prisma generate && prisma migrate deploy"
-  },
+  "start": "prisma generate && prisma migrate deploy && node ./bin/www",
+  "dev": "nodemon ./bin/www",
+  "postinstall": "prisma generate"
+},
   "dependencies": {
     "@prisma/client": "^5.14.0",
     "bcryptjs": "^2.4.3",
