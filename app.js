@@ -11,7 +11,7 @@ require('dotenv').config()
 let app = express();
 
 const corsOptions = {
-  origin: 'https://furniture-frontend-8k9ejmltv-igrik723s-projects.vercel.app/',
+  origin: 'https://furniture-frontend-8k9ejmltv-igrik723s-projects.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }
